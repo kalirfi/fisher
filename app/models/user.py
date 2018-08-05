@@ -29,6 +29,15 @@ class User(UserMixin, Base):
     wx_name = Column(String(32))
 
     @property
+    def summary(self):
+        return dict(
+            nickname=self.nickname,
+            beans=self.beans,
+            email=self.email,
+            send_receive=str(self.send_counter) + '/' + str(self.receive_counter)
+        )
+
+    @property
     def password(self):
         return self._password
 

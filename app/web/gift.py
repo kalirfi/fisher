@@ -1,6 +1,10 @@
-from flask import current_app, flash
+from flask import current_app, flash, render_template, url_for
+from sqlalchemy import desc
+from werkzeug.utils import redirect
 
 from app.models.gift import Gift
+from app.service.gift import GiftService
+from app.view_models.gift import MyGifts
 from . import web
 from flask_login import login_required, current_user
 from app.models.base import db
@@ -9,7 +13,12 @@ from app.models.base import db
 @web.route('/my/gifts')
 @login_required
 def my_gifts():
-    return 'My Gifts'
+    uid = current_user.id
+    gifts = Gift.query.filter_by(uid=uid, launched=False).order_by(
+        desc(Gift.create_time)).all()
+    wishes_count = GiftService.get_wish_counts(gifts)
+    view_model = MyGifts(gifts, wishes_count).package()
+    return render_template('my_gifts.html', gifts=view_model)
 
 
 @web.route('/gifts/book/<isbn>')
@@ -36,7 +45,7 @@ def save_to_gifts(isbn):
 
 @web.route('/gifts/<gid>/redraw')
 def redraw_from_gifts(gid):
-    pass
+    return redirect(url_for('web.index'))
 
 
 

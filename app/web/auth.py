@@ -3,7 +3,7 @@ from app.forms.auth import RegisterForm, LoginForm
 from app.models.base import db
 from app.models.user import User
 from . import web
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 import cymysql
 
 
@@ -39,19 +39,21 @@ def login():
 
 @web.route('/reset/password', methods=['GET', 'POST'])
 def forget_password_request():
-    pass
+    return render_template('404.html')
 
 
 @web.route('/reset/password/<token>', methods=['GET', 'POST'])
 def forget_password(token):
-    pass
+    return render_template('404.html')
 
 
 @web.route('/change/password', methods=['GET', 'POST'])
 def change_password():
-    pass
+    return render_template('404.html')
 
 
 @web.route('/logout')
+@login_required
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for('web.index'))
