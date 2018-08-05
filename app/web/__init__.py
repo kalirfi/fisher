@@ -7,6 +7,13 @@ from flask import Blueprint
 # __name__表示蓝图所在的模块
 web = Blueprint('web', __name__)
 
-from app.web import book
-from app.web import user
+from app.web import (
+    book,
+    auth,
+    drift,
+    gift,
+    main,
+    wish,
+)
+
 
