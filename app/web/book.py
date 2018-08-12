@@ -1,7 +1,5 @@
 from flask import jsonify, request, current_app, url_for, render_template, flash
 from app.forms.book import SearchForm
-import json
-
 from app.libs.helper import is_isbn_or_key
 from app.spider.yushu_book import YuShuBook
 from app.view_models.book import BookViewModel, BookCollection

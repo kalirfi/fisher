@@ -41,11 +41,20 @@ def save_to_gifts(isbn):
         #     raise e
     else:
         flash('这本书已添加至你的赠送清单或已存在于你的心愿清单，请不要重复添加')
+    return redirect(url_for('web.book_detail', isbn=isbn))
 
 
 @web.route('/gifts/<gid>/redraw')
+@login_required
 def redraw_from_gifts(gid):
-    return redirect(url_for('web.index'))
+    gift = Gift.query.filter_by(id=gid, launched=False).first()
+    if not gift:
+        flash('该书籍已交易，删除失败')
+    else:
+        with db.auto_commit():
+            current_user.beans -= current_app.config['BEANS_UPLOAD_ONE_BOOK']
+            db.session.delete(gift)
+    return redirect(url_for('web.my_gifts'))
 
 
 

@@ -22,8 +22,11 @@ class Base(db.Model):
     create_time = Column('create_time', Integer)
     status = Column(SmallInteger, default=1)
 
+    def __init__(self):
+        self.create_time = timestamp()
+
     def set_attrs(self, attrs):
         for k, v in attrs.items():
             if hasattr(self, k) and k != id:
                 setattr(self, k, v)
-        self.create_time = timestamp()
+
